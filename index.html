@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpotFresh — Skip vasken. Forlæng tøjet.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1a4a2e;
+    --green-light: #2d6e48;
+    --green-pale: #e8f0eb;
+    --cream: #f7f5f0;
+    --ink: #1a1a18;
+    --muted: #6b7c6e;
+    --white: #ffffff;
+    --accent: #5cb870;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 5%;
+    background: rgba(247,245,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26,74,46,0.08);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--green);
+    letter-spacing: 0.02em;
+  }
+
+  .logo span { color: var(--accent); }
+
+  nav a.cta-nav {
+    background: var(--green);
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.55rem 1.4rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: background 0.2s;
+  }
+
+  nav a.cta-nav:hover { background: var(--green-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 5% 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 80% 50%, rgba(92,184,112,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 15% 80%, rgba(26,74,46,0.07) 0%, transparent 50%);
+  }
+
+  .hero-content {
+    position: relative;
+    max-width: 680px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  /* WAITLIST FORM */
+  .waitlist-form {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .waitlist-form input[type="email"] {
+    flex: 1;
+    min-width: 220px;
+    padding: 0.9rem 1.2rem;
+    border: 1.5px solid rgba(26,74,46,0.2);
+    border-radius: 2rem;
+    background: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .waitlist-form input[type="email"]:focus {
+    border-color: var(--green);
+  }
+
+  .waitlist-form input::placeholder { color: #a0a89e; }
+
+  .waitlist-form button {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .waitlist-form button:hover { background: var(--green-light); transform: translateY(-1px); }
+  .waitlist-form button:active { transform: translateY(0); }
+
+  .waitlist-note {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.8rem;
+    animation: fadeUp 0.7s 0.35s ease both;
+  }
+
+  .success-msg {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 0.9rem 1.4rem;
+    border-radius: 2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .success-msg.show { display: flex; }
+
+  .hero-visual {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(340px, 35vw);
+    animation: floatIn 0.9s 0.3s ease both;
+  }
+
+  .bottle-card {
+    background: var(--white);
+    border-radius: 2rem;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 20px 60px rgba(26,74,46,0.12), 0 4px 16px rgba(0,0,0,0.06);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bottle-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(92,184,112,0.2), transparent);
+    border-radius: 50%;
+  }
+
+  .bottle-emoji { font-size: 4.5rem; display: block; margin-bottom: 1rem; }
+
+  .bottle-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 0.4rem;
+  }
+
+  .bottle-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
+  }
+
+  .bottle-badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .badge {
+    background: var(--green-pale);
+    color: var(--green);
+    padding: 0.3rem 0.7rem;
+    border-radius: 1rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+  }
+
+  /* PROBLEM SECTION */
+  .problem {
+    padding: 6rem 5%;
+    background: var(--green);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(92,184,112,0.2), transparent);
+    border-radius: 50%;
+  }
+
+  .problem-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .problem h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+  }
+
+  .problem h2 em { font-style: italic; color: var(--accent); }
+
+  .problem p {
+    font-size: 1rem;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    padding: 7rem 5%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-label::before {
+    content: '— ';
+  }
+
+  h2.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 3.5rem;
+    color: var(--ink);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .step {
+    position: relative;
+    padding: 2rem;
+    background: var(--white);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(26,74,46,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26,74,46,0.1);
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--green-pale);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+
+  .step h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+
+  .step p {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* WHY */
+  .why {
+    padding: 6rem 5%;
+    background: var(--green-pale);
+  }
+
+  .why-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .why-card {
+    background: var(--white);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(26,74,46,0.06);
+  }
+
+  .why-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .why-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .why-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* FINAL CTA */
+  .final-cta {
+    padding: 8rem 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(92,184,112,0.1), transparent);
+  }
+
+  .final-cta-inner { position: relative; }
+
+  .final-cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .final-cta h2 em { font-style: italic; color: var(--green); }
+
+  .final-cta p {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .final-cta .waitlist-form {
+    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 5%;
+    border-top: 1px solid rgba(26,74,46,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  footer .logo { font-size: 1.1rem; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes floatIn {
+    from { opacity: 0; transform: translateY(-40%) translateX(30px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(-50%) translateY(0); }
+    50% { transform: translateY(-50%) translateY(-10px); }
+  }
+
+  .hero-visual { animation: floatIn 0.9s 0.3s ease both; }
+
+  /* RESPONSIVE */
+  @media (max-width: 800px) {
+    .hero-visual { display: none; }
+    .problem-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .steps { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 2.8rem; }
+  }
+
+  @media (max-width: 500px) {
+    .why-grid { grid-template-columns: 1fr; }
+    .waitlist-form { flex-direction: column; }
+    .waitlist-form input[type="email"], .waitlist-form button { width: 100%; }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Spot<span>Fresh</span></div>
+  <a href="#waitlist" class="cta-nav">Kom på venteliste →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Snart tilgængelig i Norden</div>
+    <h1>Skip vasken.<br><em>Forlæng tøjet.</em></h1>
+    <p class="hero-sub">
+      SpotFresh er et enzymbaseret skumspray der renser svedzoner lokalt — 
+      så dit tøj dufter frisk igen, uden at du behøver smide det i maskinen.
+    </p>
+    <div class="waitlist-form" id="hero-form">
+      <input type="email" placeholder="din@email.dk" id="hero-email" autocomplete="email">
+      <button onclick="signup('hero')">Tilmeld venteliste</button>
+    </div>
+    <div class="success-msg" id="hero-success">
+      ✓ &nbsp;Du er på listen! Vi giver dig besked først.
+    </div>
+    <p class="waitlist-note">🌿 Ingen spam. Kun én mail når vi er klar.</p>
+  </div>
+  <div class="hero-visual">
+    <div class="bottle-card">
+      <span class="bottle-emoji">🧴</span>
+      <div class="bottle-name">SpotFresh</div>
+      <div class="bottle-desc">Enzymbaseret skumspray<br>til svedzoner i tøj — 150 ml</div>
+      <div class="bottle-badges">
+        <span class="badge">🌿 Enzymbaseret</span>
+        <span class="badge">♻️ Refill-venlig</span>
+        <span class="badge">🇩🇰 Nordisk</span>
+        <span class="badge">No harsh chemicals</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-inner">
+    <div>
+      <h2>Hver vask <em>slider</em> dit tøj.</h2>
+      <p>
+        Vi vasker tøj der ikke er beskidt — fordi det lugter lidt under armene. 
+        Resultatet er unødvendigt slid, spildt vand og kortere levetid på dit tøj. 
+        SpotFresh renser præcis dér hvor problemet sidder.
+      </p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">60%</div>
+        <div class="stat-label">af vaskecyklusser er unødvendige ifølge forbrugerundersøgelser</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">50L</div>
+        <div class="stat-label">vand pr. vask i en standard vaskemaskine</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3×</div>
+        <div class="stat-label">længere levetid på tøj ved færre vaskecyklusser</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">0 kr</div>
+        <div class="stat-label">i el og vand per behandling med SpotFresh</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="reveal">
+    <span class="section-label">Sådan virker det</span>
+    <h2 class="section-title">Tre trin. Det hele.</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-icon">👕</div>
+      <h3>Vend tøjet vrangen ud</h3>
+      <p>Spray 3–4 pumper direkte på armhulezonerne indefra. Du kan se præcis hvad du renser.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-icon">⏱️</div>
+      <h3>Lad enzymerne virke</h3>
+      <p>5–10 minutter er nok. Protease-enzymer nedbryder svedproteiner og bakterier i fibrene.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-icon">✨</div>
+      <h3>Tør af og bær igen</h3>
+      <p>Tør med en fugtig klud eller lad lufttørre. Tøjet er friskt, rent og klar til endnu en dag.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SPOTFRESH -->
+<section class="why">
+  <div class="why-inner">
+    <div class="reveal">
+      <span class="section-label">Hvorfor SpotFresh</span>
+      <h2 class="section-title">Ikke bare en "freshener"</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon">🔬</div>
+        <h3>Enzymbaseret rensning</h3>
+        <p>Vi maskerer ikke lugten med parfume — vi nedbryder de bakterier og svedproteiner der skaber den.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">🎯</div>
+        <h3>Zone-specifikt</h3>
+        <p>Designet specifikt til svedzoner. Ikke til hele plagget. Præcision frem for overfladisk behandling.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">💚</div>
+        <h3>Bæredygtigt valg</h3>
+        <p>Færre vaskecyklusser = mindre vand, el og CO₂. Og dit tøj holder markant længere.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">♻️</div>
+        <h3>Refill-model</h3>
+        <p>Køb flasken én gang. Genopfyld med concentrate-refill. Minimalt plastikforbrug.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">🌿</div>
+        <h3>Nordisk formulering</h3>
+        <p>Udviklet og produceret i Danmark. Fri for hård kemi. Svanemærke-kompatibel formulering.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon">👕</div>
+        <h3>Virker på alle stoffer</h3>
+        <p>Bomuld, polyester, merino uld, sportsstof — SpotFresh er testet til de materialer du faktisk bruger.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="waitlist">
+  <div class="final-cta-inner">
+    <div class="reveal">
+      <h2>Vær den første<br>til at prøve <em>SpotFresh</em></h2>
+      <p>Vi lancerer snart. Tilmeld dig ventelisten og få eksklusiv early-bird adgang og rabat.</p>
+    </div>
+    <div class="waitlist-form reveal" id="bottom-form">
+      <input type="email" placeholder="din@email.dk" id="bottom-email" autocomplete="email">
+      <button onclick="signup('bottom')">Tilmeld gratis</button>
+    </div>
+    <div class="success-msg" id="bottom-success" style="justify-content:center;">
+      ✓ &nbsp;Perfekt! Du hører fra os som en af de første.
+    </div>
+    <p class="waitlist-note reveal">🌿 Ingen spam. Kun én mail når vi er klar.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Spot<span>Fresh</span></div>
+  <div>© 2026 SpotFresh — Et nordisk produkt</div>
+  <div>CIFIC Holding ApS</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Waitlist signup
+  const signups = JSON.parse(localStorage.getItem('spotfresh_waitlist') || '[]');
+
+  function signup(form) {
+    const email = document.getElementById(form + '-email').value;
+    if (!email || !email.includes('@')) {
+      document.getElementById(form + '-email').style.borderColor = '#e05252';
+      setTimeout(() => document.getElementById(form + '-email').style.borderColor = '', 1500);
+      return;
+    }
+    signups.push({ email, ts: new Date().toISOString() });
+    localStorage.setItem('spotfresh_waitlist', JSON.stringify(signups));
+    document.getElementById(form + '-form').style.display = 'none';
+    document.getElementById(form + '-success').classList.add('show');
+  }
+
+  // Enter key
+  document.querySelectorAll('input[type=email]').forEach(input => {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const form = input.id.replace('-email', '');
+        signup(form);
+      }
+    });
+  });
+</script>
+</body>
+</html>
