@@ -573,12 +573,8 @@
       SpotFresh er et enzymbaseret skumspray der renser svedzoner lokalt — 
       så dit tøj dufter frisk igen, uden at du behøver smide det i maskinen.
     </p>
-    <div class="waitlist-form" id="hero-form">
-      <input type="email" placeholder="din@email.dk" id="hero-email" autocomplete="email">
-      <button onclick="signup('hero')">Tilmeld venteliste</button>
-    </div>
-    <div class="success-msg" id="hero-success">
-      ✓ &nbsp;Du er på listen! Vi giver dig besked først.
+    <div style="max-width:480px;">
+      <iframe data-tally-src="https://tally.so/embed/RGBZ5v?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="214" frameborder="0" marginheight="0" marginwidth="0" title="Tilmeld dig ventelisten"></iframe>
     </div>
     <p class="waitlist-note">🌿 Ingen spam. Kun én mail når vi er klar.</p>
   </div>
@@ -706,12 +702,8 @@
       <h2>Vær den første<br>til at prøve <em>SpotFresh</em></h2>
       <p>Vi lancerer snart. Tilmeld dig ventelisten og få eksklusiv early-bird adgang og rabat.</p>
     </div>
-    <div class="waitlist-form reveal" id="bottom-form">
-      <input type="email" placeholder="din@email.dk" id="bottom-email" autocomplete="email">
-      <button onclick="signup('bottom')">Tilmeld gratis</button>
-    </div>
-    <div class="success-msg" id="bottom-success" style="justify-content:center;">
-      ✓ &nbsp;Perfekt! Du hører fra os som en af de første.
+    <div class="reveal" style="max-width:480px;margin:0 auto;">
+      <iframe data-tally-src="https://tally.so/embed/RGBZ5v?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="214" frameborder="0" marginheight="0" marginwidth="0" title="Tilmeld dig ventelisten"></iframe>
     </div>
     <p class="waitlist-note reveal">🌿 Ingen spam. Kun én mail når vi er klar.</p>
   </div>
@@ -735,32 +727,7 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
-
-  // Waitlist signup
-  const signups = JSON.parse(localStorage.getItem('spotfresh_waitlist') || '[]');
-
-  function signup(form) {
-    const email = document.getElementById(form + '-email').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById(form + '-email').style.borderColor = '#e05252';
-      setTimeout(() => document.getElementById(form + '-email').style.borderColor = '', 1500);
-      return;
-    }
-    signups.push({ email, ts: new Date().toISOString() });
-    localStorage.setItem('spotfresh_waitlist', JSON.stringify(signups));
-    document.getElementById(form + '-form').style.display = 'none';
-    document.getElementById(form + '-success').classList.add('show');
-  }
-
-  // Enter key
-  document.querySelectorAll('input[type=email]').forEach(input => {
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const form = input.id.replace('-email', '');
-        signup(form);
-      }
-    });
-  });
 </script>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
 </body>
 </html>
